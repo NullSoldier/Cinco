@@ -40,9 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CincoServer.cs" />
+    <Compile Include="ClientSync.cs" />
+    <Compile Include="Core\CincoClient.cs" />
+    <Compile Include="EntitySnapshotMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyGroup.cs" />
+    <Compile Include="Protocol.cs" />
+    <Compile Include="ServerSync.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tempest\Desktop\Tempest\Tempest.csproj">
+      <Project>{D6A2003C-CBB2-47B0-B306-521141D3068D}</Project>
+      <Name>Tempest</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

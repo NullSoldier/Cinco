@@ -14,12 +14,14 @@ namespace Cinco
 			this.Fields = new Dictionary<string, PropertyGroup>();
 		}
 
+		public int NetworkID;
 		public string Name;
 		public EntityType EntityType;
 		public ChangedState ChangedState;
 		public SendState SendState;
 		public Dictionary<string, PropertyGroup> Fields;
 		public HashSet<string> Changed;
+		public 
 
 		public void Register<T> (string name, T value)
 		{
