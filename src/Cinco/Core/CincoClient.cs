@@ -42,7 +42,7 @@ namespace Cinco.Core
 		}
 
 		private List<NetworkEntity> entities;
-		private Dictionary<uint, NetworkEntity> entityMap; 
+		private Dictionary<uint, NetworkEntity> entityMap;
 
 		private void SyncEntity (NetworkEntity entity)
 		{
