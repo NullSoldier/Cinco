@@ -6,7 +6,7 @@ using Tempest;
 
 namespace Cinco.Core
 {
-	public abstract class CincoClient
+	public class CincoClient
 		: ClientBase
 	{
 		public CincoClient(IClientConnection connection)

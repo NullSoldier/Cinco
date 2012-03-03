@@ -16,18 +16,19 @@ namespace SampleGame.Core
 		public SimpleServer(IConnectionProvider provider)
 			: base (provider, new ServerOptions())
 		{
-			this.players = new Dictionary<uint, SPlayer>();
+			this.players = new Dictionary<long, SPlayer>();
 
 			this.RegisterMessageHandler<ConnectMessage> (OnConnectMessageReceived);
-			// when a player connects
-			// Create a character for them
-			// Register the character
 		}
 
 		private Dictionary<long, SPlayer> players;
 
 		public void OnConnectMessageReceived (MessageEventArgs<ConnectMessage> ev)
 		{
+			// When a player connects
+			// Create a character for them
+			// Register the character
+
 			var player = new SPlayer();
 			player.Name = ev.Message.PlayerName;
 

@@ -31,10 +31,7 @@ namespace Cinco
 		{
 			NetworkEntity newCopy = new NetworkEntity (EntityName, EntityType);
 
-			foreach (var kvp in Fields)
-			{
-
-			}
+			return newCopy;
 		}
 
 		public object this[string name]

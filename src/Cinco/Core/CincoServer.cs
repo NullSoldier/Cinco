@@ -14,7 +14,7 @@ namespace Cinco
 		: ServerBase
 	{
 		public CincoServer (IConnectionProvider connectionProvider, ServerOptions serverOptions)
-			: base (connectionProvider, MessageTypes.All) 
+			: base (connectionProvider, MessageTypes.Reliable) 
 		{
 			this.options = serverOptions;
 			this.users = new Dictionary<IConnection, CincoUser> (options.MaxUsers);

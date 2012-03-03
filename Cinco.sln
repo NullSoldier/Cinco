@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tempest", "src\Tempest\Desk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame", "src\SampleGame\SampleGame\SampleGame.csproj", "{EA620998-579D-4CB4-8977-3A5CC0735C70}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SampleGameContent", "src\SampleGame\SampleGameContent\SampleGameContent.contentproj", "{093C838E-1B0E-4F3F-9824-5553CE85A283}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGameContent", "src\SampleGame\SampleGameContent\SampleGameContent.contentproj", "{093C838E-1B0E-4F3F-9824-5553CE85A283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleServer", "SampleServer\SampleServer.csproj", "{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,16 @@ Global
 		{093C838E-1B0E-4F3F-9824-5553CE85A283}.Release|Any CPU.ActiveCfg = Release|x86
 		{093C838E-1B0E-4F3F-9824-5553CE85A283}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{093C838E-1B0E-4F3F-9824-5553CE85A283}.Release|x86.ActiveCfg = Release|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Debug|x86.ActiveCfg = Debug|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Debug|x86.Build.0 = Debug|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Release|Any CPU.ActiveCfg = Release|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Release|Mixed Platforms.Build.0 = Release|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Release|x86.ActiveCfg = Release|x86
+		{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
