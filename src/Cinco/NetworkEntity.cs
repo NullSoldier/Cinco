@@ -33,11 +33,13 @@ namespace Cinco
 
 		public NetworkEntity DeepCopy()
 		{
-			throw new NotImplementedException();
+			NetworkEntity copy = new NetworkEntity (EntityName, EntityType);
+			copy.SendState = SendState;
 
-			NetworkEntity newCopy = new NetworkEntity (EntityName, EntityType);
+			foreach (var kvp in Fields)
+				copy.Fields.Add (kvp.Key, kvp.Value);
 
-			return newCopy;
+			return copy;
 		}
 
 		public object this[string name]

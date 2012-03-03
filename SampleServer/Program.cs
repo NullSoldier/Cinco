@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Cinco;
 using SampleGame;
 using SampleGame.Core;
 using SampleGame.Messages;
@@ -21,7 +22,7 @@ namespace SampleServer
 		{
 			P.Protocol.Discover (typeof (BaseMessage).Assembly);
 
-			server = new SimpleServer (new NetworkConnectionProvider (P.Protocol, new IPEndPoint (IPAddress.Any, port), 32));
+			server = new SimpleServer (new NetworkConnectionProvider (new [] { P.Protocol, CincoProtocol.Protocol }, new IPEndPoint (IPAddress.Any, port), 32));
 			server.Start ();
 
 			isRunning = true;

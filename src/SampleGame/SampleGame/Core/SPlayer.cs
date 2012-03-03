@@ -34,5 +34,9 @@ namespace SampleGame.Core
 			get;
 			set;
 		}
+
+		public virtual void Update()
+		{
+		}
 	}
 }

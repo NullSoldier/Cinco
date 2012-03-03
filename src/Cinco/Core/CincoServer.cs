@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Cinco.Core;
+using Cinco.Messages;
 using SampleGame;
 using Tempest;
 using Tempest.InternalProtocol;
+using Tempest.Providers.Network;
 
 namespace Cinco
 {
@@ -16,6 +18,8 @@ namespace Cinco
 		public CincoServer (IConnectionProvider connectionProvider, ServerOptions serverOptions)
 			: base (connectionProvider, MessageTypes.Reliable) 
 		{
+			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
+
 			this.options = serverOptions;
 			this.users = new Dictionary<IConnection, CincoUser> (options.MaxUsers);
 			this.entities = new Dictionary<uint, NetworkEntity> ();
@@ -32,7 +36,6 @@ namespace Cinco
 		public void RegisterEntity (NetworkEntity entity)
 		{
 			entity.NetworkID = ++lastEntityID;
-
 			entities.Add (entity.NetworkID, entity);
 		}
 
@@ -96,7 +99,11 @@ namespace Cinco
 
 		protected override void OnConnectionMade (object sender, ConnectionMadeEventArgs e)
 		{
-			var cincoUser = new CincoUser { Connection = e.Connection };
+			var cincoUser = new CincoUser
+			{
+				Connection = e.Connection,
+				IsActive = true,
+			};
 
 			lock (userLock)
 			{
