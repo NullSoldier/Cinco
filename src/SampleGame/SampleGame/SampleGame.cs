@@ -20,6 +20,7 @@ namespace SampleGame
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		CincoClient client;
+		SpriteFont font;
 
 		public SampleGame()
 		{
@@ -30,6 +31,7 @@ namespace SampleGame
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+			font = Content.Load<SpriteFont> ("font");
 
 			IPAddress host = IPAddress.Parse ("127.0.0.1");
 			int port = Convert.ToInt32 (42900);
@@ -51,6 +53,10 @@ namespace SampleGame
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
+
+			spriteBatch.Begin();
+			spriteBatch.DrawString (font, "Connected: " + client.IsConnected.ToString(), Vector2.Zero, Color.Black);
+			spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
