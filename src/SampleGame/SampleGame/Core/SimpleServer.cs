@@ -25,14 +25,11 @@ namespace SampleGame.Core
 
 		public void OnConnectMessageReceived (MessageEventArgs<ConnectMessage> ev)
 		{
-			// When a player connects
-			// Create a character for them
-			// Register the character
-
 			var player = new SPlayer();
 			player.Name = ev.Message.PlayerName;
 
 			players.Add (ev.Connection.ConnectionId, player);
+			RegisterEntity (player);
 
 			Console.Write (player.Name + " has connected!");
 		}

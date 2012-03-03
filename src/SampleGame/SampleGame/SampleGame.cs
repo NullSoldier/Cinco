@@ -15,12 +15,13 @@ using Tempest.Providers.Network;
 
 namespace SampleGame
 {
-	public class SampleGame : Game
+	public class SampleGame
+		: Game
 	{
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
-		CincoClient client;
-		SpriteFont font;
+		private GraphicsDeviceManager graphics;
+		private SpriteBatch spriteBatch;
+		private SimpleClient client;
+		private SpriteFont font;
 
 		public SampleGame()
 		{
@@ -38,16 +39,11 @@ namespace SampleGame
 
 			client = new SimpleClient (new NetworkClientConnection (P.Protocol));
 			client.ConnectAsync (new IPEndPoint (host, port))
-				.ContinueWith ((t) => Console.WriteLine("We're connected!"));
-		}
-
-		protected override void UnloadContent()
-		{
-		}
-
-		protected override void Update(GameTime gameTime)
-		{
-			base.Update(gameTime);
+				.ContinueWith (t =>
+				{
+					client.Authenticate ("Player");
+					Console.WriteLine ("We're connected!");
+				});
 		}
 
 		protected override void Draw(GameTime gameTime)

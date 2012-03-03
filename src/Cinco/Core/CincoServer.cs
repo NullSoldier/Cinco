@@ -18,6 +18,7 @@ namespace Cinco
 		{
 			this.options = serverOptions;
 			this.users = new Dictionary<IConnection, CincoUser> (options.MaxUsers);
+			this.entities = new Dictionary<uint, NetworkEntity> ();
 			this.userLock = new object();
 			this.syncLock = new object();
 
