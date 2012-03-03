@@ -12,6 +12,8 @@ namespace Cinco
 			this.EntityName = entityName;
 			this.EntityType = entityType;
 			this.Fields = new Dictionary<string, PropertyGroup>();
+			this.Changed = new HashSet<string>();
+			this.SyncLock = new object ();
 		}
 
 		public uint NetworkID;
@@ -21,14 +23,18 @@ namespace Cinco
 		public SendState SendState;
 		public Dictionary<string, PropertyGroup> Fields;
 		public HashSet<string> Changed;
+		public object SyncLock;
 
 		public void Register<T> (string name, T value)
 		{
-			Fields.Add (name, new PropertyGroup (value, value.GetType()));
+			lock (SyncLock)
+				Fields.Add (name, new PropertyGroup (value, value.GetType()));
 		}
 
 		public NetworkEntity DeepCopy()
 		{
+			throw new NotImplementedException();
+
 			NetworkEntity newCopy = new NetworkEntity (EntityName, EntityType);
 
 			return newCopy;
@@ -44,13 +50,25 @@ namespace Cinco
 			}
 		}
 
+		public void ClearChanged()
+		{
+			lock (SyncLock)
+			{
+				ChangedState = ChangedState.None;
+				Changed.Clear();
+			}
+		}
+
 		private void MarkAsChanged (string name)
 		{
-			if (Changed.Contains(name))
-				return;
+			lock (SyncLock)
+			{
+				if (Changed.Contains (name))
+					return;
 
-			Changed.Add(name);	
-			ChangedState = ChangedState.Changed;
+				Changed.Add (name);
+				ChangedState = ChangedState.Changed;
+			}
 		}
 	}
 
