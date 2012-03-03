@@ -17,6 +17,12 @@ namespace SampleGame.Core
 			this.SendState = SendState.Always;
 		}
 
+		public string Name
+		{
+			get;
+			set;
+		}
+
 		public Vector2 Postion
 		{
 			get { return (Vector2)base["Position"]; }

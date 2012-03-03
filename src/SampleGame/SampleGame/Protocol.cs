@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using Tempest;
 
-namespace Cinco
+namespace SampleGame
 {
 	public static class P
 	{
-		public static Protocol Protocol = new Protocol (142, 1);
+		public static Protocol Protocol = new Protocol (2, 1);
 	}
 }

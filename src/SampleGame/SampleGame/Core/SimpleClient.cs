@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cinco.Core;
 using Tempest;
 
 namespace SampleGame.Core
 {
 	public class SimpleClient
-		: ClientBase
+		: CincoClient
 	{
-		public SimpleClient(IClientConnection connection)
-			: base (connection, MessageTypes.Reliable, false)
+		public SimpleClient (IClientConnection connection)
+			: base ()
 		{
-			clientSync = new ClientSync (connection);
+			
 		}
-
-		private ClientSync clientSync;
 	}
 }

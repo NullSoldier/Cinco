@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cinco;
+using Cinco.Core;
 using Tempest;
 
 namespace SampleGame
 {
 	public class ClientSync
-		: ClientBase
 	{
-		public ClientSync (IClientConnection connection)
- 			: base (connection, MessageTypes.Reliable, false)
+		public ClientSync (CincoClient client)
 		{
-			entities = new List<NetworkEntity> ();
-			entityMap = new Dictionary<int, NetworkEntity>();
+			this.entities = new List<NetworkEntity> ();
+			this.entityMap = new Dictionary<uint, NetworkEntity>();
 			
-			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
+			client.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
 		}
 
 		public void Register (NetworkEntity networkEntity)
@@ -27,8 +26,30 @@ namespace SampleGame
 			entities.Add (networkEntity);
 			entityMap.Add (networkEntity.NetworkID, networkEntity);
 		}
-		
-		public void Send()
+
+		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
+		{
+			var entityMessage = ev.Message;
+
+			foreach (SnapshotEntity entity in entityMessage.Entities)
+				SyncEntity (entity.Entity);
+		}
+
+		private List<NetworkEntity> entities;
+		private Dictionary<uint, NetworkEntity> entityMap; 
+
+		private void SyncEntity (NetworkEntity entity)
+		{
+			var localEntity = entityMap [entity.NetworkID];
+			
+			foreach (var kvp in entity.Fields)
+				localEntity.Fields[kvp.Key] = kvp.Value;
+		}
+	}
+}
+
+/*
+public void Send()
 		{
 			var sendEntities = new List<NetworkEntity>();
 
@@ -48,28 +69,8 @@ namespace SampleGame
 
 			var message = new EntitySnapshotMessage
 			{
-				NetworkEntities = sendEntities
+				Entities = sendEntities
 			};
-			connection.Send (message);
+			client.Connection.Send (message);
 		}
-
-		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
-		{
-			var entityMessage = ev.Message;
-
-			foreach (NetworkEntity entity in entityMessage.NetworkEntities)
-				SyncEntity (entity);
-		}
-
-		private List<NetworkEntity> entities;
-		private Dictionary<int, NetworkEntity> entityMap; 
-
-		private void SyncEntity (NetworkEntity entity)
-		{
-			var localEntity = entityMap [entity.NetworkID];
-			
-			foreach (var kvp in entity.Fields)
-				localEntity.Fields[kvp.Key] = kvp.Value;
-		}
-	}
-}
+*/

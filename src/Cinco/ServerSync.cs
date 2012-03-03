@@ -4,30 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Cinco;
+using Cinco.Core;
 using Tempest;
 using Tempest.InternalProtocol;
 
 namespace SampleGame
 {
-	public partial class ServerSync
-		: ServerBase
+	public class ServerSync
 	{
-		public ServerSync (IConnectionProvider provider)
-			: base (provider, MessageTypes.Reliable)
+		public ServerSync ()
 		{
-			connections = new HashSet<IConnection>();
-			userLock = new object ();
-
-			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
+			entities = new List<NetworkEntity> ();
 		}
 
-		private HashSet<IConnection> connections;
-		private int lastEntityID;
-		private object userLock;
-
-		private void OnEntitySnapshotMessage(MessageEventArgs<EntitySnapshotMessage> e)
+		public void RegisterEntity(NetworkEntity entity)
 		{
-		
 		}
+
+		public void Syncronize(IEnumerable<CincoClient> clients)
+		{
+			
+		}
+
+		private List<NetworkEntity> entities; 
 	}
 }

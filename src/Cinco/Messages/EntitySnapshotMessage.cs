@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cadenza.Collections;
+using Cinco.Core;
+using Cinco.Messages;
 using Tempest;
 
 namespace Cinco
 {
 	public class EntitySnapshotMessage
-		: Message
+		: CincoMessageBase
 	{
-		public EntitySnapshotMessage ()
-			: base (P.Protocol, 0)
+		public EntitySnapshotMessage()
+			: base (CincoMessageTypes.EntitySnapshotMessage)
 		{
 		}
 
-		public List<NetworkEntity> NetworkEntities; 
+		public EntitySnapshotMessage (Snapshot snapshot)
+			: base (CincoMessageTypes.EntitySnapshotMessage)
+		{
+			Entities = snapshot.Entities.Values.ToList();
+		}
+
+		public List<SnapshotEntity> Entities; 
 
 		public override void WritePayload (ISerializationContext context, IValueWriter writer)
 		{

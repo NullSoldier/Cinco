@@ -5,27 +5,36 @@ using System.Text;
 
 namespace Cinco
 {
-	public abstract class NetworkEntity
+	public class NetworkEntity
 	{
-		public NetworkEntity(string name, EntityType entityType)
+		public NetworkEntity(string entityName, EntityType entityType)
 		{
-			this.Name = name;
+			this.EntityName = entityName;
 			this.EntityType = entityType;
 			this.Fields = new Dictionary<string, PropertyGroup>();
 		}
 
-		public int NetworkID;
-		public string Name;
+		public uint NetworkID;
+		public string EntityName;
 		public EntityType EntityType;
 		public ChangedState ChangedState;
 		public SendState SendState;
 		public Dictionary<string, PropertyGroup> Fields;
 		public HashSet<string> Changed;
-		public 
 
 		public void Register<T> (string name, T value)
 		{
 			Fields.Add (name, new PropertyGroup (value, value.GetType()));
+		}
+
+		public NetworkEntity DeepCopy()
+		{
+			NetworkEntity newCopy = new NetworkEntity (EntityName, EntityType);
+
+			foreach (var kvp in Fields)
+			{
+
+			}
 		}
 
 		public object this[string name]

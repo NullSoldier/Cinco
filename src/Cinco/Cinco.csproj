@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cadenza">
+      <HintPath>..\lib\Cadenza.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,14 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CincoServer.cs" />
+    <Compile Include="Core\CincoServer.cs" />
     <Compile Include="ClientSync.cs" />
     <Compile Include="Core\CincoClient.cs" />
-    <Compile Include="EntitySnapshotMessage.cs" />
+    <Compile Include="Core\CincoUser.cs" />
+    <Compile Include="Core\ServerOptions.cs" />
+    <Compile Include="Core\Snapshot.cs" />
+    <Compile Include="Messages\CincoMessageBase.cs" />
+    <Compile Include="Messages\EntitySnapshotMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyGroup.cs" />
-    <Compile Include="Protocol.cs" />
+    <Compile Include="CincoProtocol.cs" />
     <Compile Include="ServerSync.cs" />
   </ItemGroup>
   <ItemGroup>
