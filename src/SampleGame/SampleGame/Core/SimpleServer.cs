@@ -19,6 +19,7 @@ namespace SampleGame.Core
 		{
 			this.players = new Dictionary<long, SPlayer>();
 			this.bots = new List<SPlayerAI> ();
+			this.botLock = new object();
 			this.random = new Random();
 
 			this.RegisterMessageHandler<ConnectMessage> (OnConnectMessageReceived);
@@ -30,6 +31,7 @@ namespace SampleGame.Core
 
 		private Dictionary<long, SPlayer> players;
 		private List<SPlayerAI> bots;
+		private object botLock;
 		private Random random;
 
 		private void OnConnectMessageReceived(MessageEventArgs<ConnectMessage> ev)
@@ -43,11 +45,17 @@ namespace SampleGame.Core
 			Console.Write (player.Name + " has connected!");
 		}
 
-		public override void Tick(DateTime dateTime)
+		public override void Tick (DateTime dateTime)
 		{
-			// Move all of the bots
-			foreach (SPlayerAI bot in bots)
-				bot.Update();
+			if (botLock == null)
+				return;
+
+			lock (botLock)
+			{
+				// Move all of the bots
+				foreach (SPlayerAI bot in bots)
+					bot.Update();
+			}
 		}
 
 		private void SpawnBot()
@@ -56,7 +64,12 @@ namespace SampleGame.Core
 			RegisterEntity (bot);
 
 			bot.Name = "Bot " + bot.NetworkID; 
-			bots.Add (bot);
+			bot.Postion = new Vector2 (random.Next(0, 500), random.Next(0, 600));
+
+			lock (botLock)
+				bots.Add (bot);
+
+			Console.WriteLine ("Spawned bot: " + bot.Name);
 		}
 	}
 }

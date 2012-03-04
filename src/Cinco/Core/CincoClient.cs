@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Cinco.Messages;
 using SampleGame;
@@ -16,21 +17,25 @@ namespace Cinco.Core
 			: base (connection, MessageTypes.Reliable)
 		{
 			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
-			((NetworkConnection)connection).AddProtocol (CincoProtocol.Protocol);
 
 			this.entities = new List<NetworkEntity> ();
 			this.entityMap = new Dictionary<uint, NetworkEntity>();
+			this.entityTypeInformation = new Dictionary<string, EntityInformation>();
 			
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
 		}
 
-		public void Register (NetworkEntity networkEntity)
+		public void Register (string name, Type entityType)
 		{
-			if (networkEntity.EntityType != EntityType.Client)
-				throw new ArgumentException ("You can only register client entities.");
+			if (entityType.IsAssignableFrom (typeof(NetworkEntity)))
+				throw new Exception("Must be an object that inherits from Network Entity");
 
-			entities.Add (networkEntity);
-			entityMap.Add (networkEntity.NetworkID, networkEntity);
+			ConstructorInfo constructorInfo = entityType.GetConstructors().FirstOrDefault();
+			if (constructorInfo == null)
+				throw new Exception ("Entity must contain a parameterless constructor");
+
+			var entityInfo = new EntityInformation (constructorInfo);
+			entityTypeInformation.Add (name, entityInfo);
 		}
 
 		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
@@ -38,11 +43,36 @@ namespace Cinco.Core
 			var entityMessage = ev.Message;
 
 			foreach (SnapshotEntity entity in entityMessage.Entities)
+			{
+				if (!entityMap.ContainsKey(entity.Entity.NetworkID))
+					CreateEntity(entity.Entity);
+
 				SyncEntity (entity.Entity);
+			}
+		}
+
+		public virtual void OnEntityCreated (NetworkEntity entity)
+		{
 		}
 
 		private List<NetworkEntity> entities;
 		private Dictionary<uint, NetworkEntity> entityMap;
+		private Dictionary<string, EntityInformation> entityTypeInformation;
+
+		private void CreateEntity (NetworkEntity entity)
+		{
+			if (!entityTypeInformation.ContainsKey(entity.EntityName))
+				throw new Exception ("Entity has not been registered with the network system");
+
+			EntityInformation info = entityTypeInformation[entity.EntityName];
+			var newEntity = (NetworkEntity)info.Create();
+			newEntity.NetworkID = entity.NetworkID;
+
+			entityMap.Add(newEntity.NetworkID, newEntity);
+			entities.Add(newEntity);
+
+			OnEntityCreated (newEntity);
+		}
 
 		private void SyncEntity (NetworkEntity entity)
 		{
@@ -51,5 +81,20 @@ namespace Cinco.Core
 			foreach (var kvp in entity.Fields)
 				localEntity.Fields[kvp.Key] = kvp.Value;
 		}
+	}
+
+	public class EntityInformation
+	{
+		public EntityInformation (ConstructorInfo constructorInfo)
+		{
+			this.constructorInfo = constructorInfo;
+		}
+		
+		public object Create ()
+		{
+			return constructorInfo.Invoke(null);
+		}
+
+		private readonly ConstructorInfo constructorInfo;
 	}
 }

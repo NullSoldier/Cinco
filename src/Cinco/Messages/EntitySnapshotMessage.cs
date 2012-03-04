@@ -52,6 +52,7 @@ namespace Cinco
 		private void WriteEntity (NetworkEntity entity, ISerializationContext context, IValueWriter writer)
 		{
 			writer.WriteString (entity.EntityName);
+			writer.WriteUInt32 (entity.NetworkID);
 			writer.WriteInt32 (entity.Fields.Count);
 
 			foreach (var field in entity.Fields)
@@ -73,6 +74,7 @@ namespace Cinco
 		private NetworkEntity ReadEntity (ISerializationContext context, IValueReader reader)
 		{
 			var entity = new NetworkEntity (reader.ReadString (), EntityType.Client);
+			entity.NetworkID = reader.ReadUInt32();
 
 			int fieldCount = reader.ReadInt32 ();
 

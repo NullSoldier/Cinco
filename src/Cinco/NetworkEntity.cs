@@ -35,6 +35,7 @@ namespace Cinco
 		{
 			NetworkEntity copy = new NetworkEntity (EntityName, EntityType);
 			copy.SendState = SendState;
+			copy.NetworkID = NetworkID;
 
 			foreach (var kvp in Fields)
 				copy.Fields.Add (kvp.Key, kvp.Value);
