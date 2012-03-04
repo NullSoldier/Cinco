@@ -10,8 +10,8 @@ namespace Cinco.Core
 	{
 		public CincoUser()
 		{
-			TickRate = 30;
-			UpdateRate = 30;
+			TickRate = 66;
+			UpdateRate = 66;
 			Interpolation = 0.3f;
 			CmdRate = 20;
 			Extrapolate = true;
