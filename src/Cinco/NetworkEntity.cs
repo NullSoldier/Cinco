@@ -43,6 +43,11 @@ namespace Cinco
 			return copy;
 		}
 
+		public virtual NetworkEntity Lerp (NetworkEntity source, NetworkEntity one, NetworkEntity two)
+		{
+			throw new NotImplementedException();
+		}
+
 		public object this[string name]
 		{
 			get { return this.Fields[name].Value; }

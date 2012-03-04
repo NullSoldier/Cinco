@@ -50,10 +50,6 @@ namespace Cinco
 
 		public virtual void Update()
 		{
-			// Tick the game if it needs it
-			// Send snapshots toc lients
-			// Enqueue history with snapshot
-			
 			while (true)
 			{
 				DateTime currentTime = DateTime.Now;

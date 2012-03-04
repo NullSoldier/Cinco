@@ -50,6 +50,9 @@
     <Compile Include="Core\CincoUser.cs" />
     <Compile Include="Core\ServerOptions.cs" />
     <Compile Include="Core\Snapshot.cs" />
+    <Compile Include="Core\SnapshotManager.cs" />
+    <Compile Include="Core\SnapshotPair.cs" />
+    <Compile Include="IndexedQueue.cs" />
     <Compile Include="Messages\CincoMessageBase.cs" />
     <Compile Include="Messages\EntitySnapshotMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
