@@ -64,7 +64,7 @@ namespace SampleGame.Core
 			RegisterEntity (bot);
 
 			bot.Name = "Bot " + bot.NetworkID; 
-			bot.Postion = new Vector2 (random.Next(40, 750), random.Next(40, 550));
+			bot.Postion = new Vector2 (random.Next(10, 790), random.Next(100, 490));
 
 			lock (botLock)
 				bots.Add (bot);

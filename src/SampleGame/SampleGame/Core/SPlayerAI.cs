@@ -16,7 +16,7 @@ namespace SampleGame.Core
 			if (currentTime.Subtract (lastMove).TotalSeconds > moveDelay)
 			{
 				Postion += new Vector2(0, speed);
-				moveAmount += speed;
+				moveAmount += Math.Abs(speed);
 
 				if (moveAmount > maxMoveAmount)
 				{
@@ -29,9 +29,9 @@ namespace SampleGame.Core
 		}
 
 		private DateTime lastMove;
-		private float moveDelay = 2f;
-		private float speed = 5f;
-		private float moveAmount;
-		private float maxMoveAmount;
+		private float moveDelay = 0.015f;
+		private float speed = 2f;
+		private float moveAmount = 0;
+		private float maxMoveAmount = 100;
 	}
 }
