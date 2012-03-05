@@ -65,9 +65,9 @@ namespace Cinco
 				writer.WriteUInt16 (typeID);
 
 				if (field.Value.Value is Vector2)
-					writer.Write (context, (Vector2)field.Value.Value, new Vector2Serializer());
-				//if (field.Value.Value is string)
-					//writer.WriteString ((string)field.Value.Value);
+					writer.Write (context, (Vector2)field.Value.Value, Vector2Serializer.Instance);
+				else if (field.Value.Value is string)
+					writer.WriteString ((string)field.Value.Value);
 				else
 					writer.Write (context, field.Value.Value, field.Value.Type);
 			}
@@ -91,7 +91,7 @@ namespace Cinco
 				object value;
 
 				if (type == typeof (Vector2))
-					value = reader.Read (context, new Vector2Serializer ());
+					value = reader.Read (context, Vector2Serializer.Instance);
 				else if (type == typeof (string))
 					value = reader.ReadString();
 				else

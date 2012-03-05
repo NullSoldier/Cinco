@@ -12,13 +12,18 @@ namespace Cinco
 	{
 		public void Serialize(ISerializationContext context, IValueWriter writer, Vector2 element)
 		{
-			writer.WriteSingle (element.X);
-			writer.WriteSingle (element.Y);
+			writer.WriteInt32 ((int)element.X);
+			writer.WriteInt32 ((int)element.Y);
 		}
 
 		public Vector2 Deserialize(ISerializationContext context, IValueReader reader)
 		{
-			return new Vector2 (reader.ReadSingle (), reader.ReadSingle ());
+			float x = reader.ReadInt32();
+			float y = reader.ReadInt32();
+
+			return new Vector2 (x, y);
 		}
+
+		public static readonly Vector2Serializer Instance = new Vector2Serializer();
 	}
 }
