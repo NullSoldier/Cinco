@@ -81,8 +81,8 @@ namespace Cinco.Core
 			{
 				if (!entityMap.ContainsKey(entity.Entity.NetworkID))
 					CreateEntity(entity.Entity);
-
-				SyncEntity (entity.Entity);
+				else
+					SyncEntity (entity.Entity);
 			}
 		}
 
@@ -107,6 +107,7 @@ namespace Cinco.Core
 			entityMap.Add(newEntity.NetworkID, newEntity);
 			entities.Add(newEntity);
 
+			SyncEntity (entity);
 			OnEntityCreated (newEntity);
 		}
 
