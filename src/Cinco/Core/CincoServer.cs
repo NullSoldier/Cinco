@@ -35,13 +35,17 @@ namespace Cinco
 
 		public void RegisterEntity (NetworkEntity entity)
 		{
-			entity.NetworkID = ++lastEntityID;
-			entities.Add (entity.NetworkID, entity);
+			lock (entityLock)
+			{
+				entity.NetworkID = ++lastEntityID;
+				entities.Add (entity.NetworkID, entity);
+			}
 		}
 
 		public void UnregisterEntity (uint entityID)
 		{
-			entities.Remove (entityID);
+			lock (entityLock)
+				entities.Remove (entityID);
 		}
 
 		public virtual void Tick (DateTime dateTime)
@@ -102,9 +106,7 @@ namespace Cinco
 			};
 
 			lock (userLock)
-			{
 				this.users.Add (e.Connection, cincoUser);
-			}
 
 			base.OnConnectionMade (sender, e);
 		}
@@ -112,9 +114,7 @@ namespace Cinco
 		protected override void OnConnectionDisconnected(object sender, DisconnectedEventArgs e)
 		{
 			lock (userLock)
-			{
 				this.users.Remove (e.Connection);
-			}
 
 			base.OnConnectionDisconnected (sender, e);
 		}
@@ -149,19 +149,22 @@ namespace Cinco
 		{
 			Snapshot snapshot = new Snapshot();
 
-			foreach (NetworkEntity entity in entities.Values)
+			lock (entityLock)
 			{
-				switch (entity.ChangedState)
+				foreach (NetworkEntity entity in entities.Values)
 				{
-					case ChangedState.Changed:
-						snapshot.AddEntity (entity, true);
-						break;
+					switch (entity.ChangedState)
+					{
+						case ChangedState.Changed:
+							snapshot.AddEntity (entity, true);
+							break;
 
-					case ChangedState.None:
-						if (!fullSnapshot)
-							snapshot.AddEntity (entity, false);
+						case ChangedState.None:
+							if (!fullSnapshot)
+								snapshot.AddEntity (entity, false);
 
-						break;
+							break;
+					}
 				}
 			}
 

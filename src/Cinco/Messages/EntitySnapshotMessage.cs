@@ -92,8 +92,8 @@ namespace Cinco
 
 				if (type == typeof (Vector2))
 					value = reader.Read (context, new Vector2Serializer ());
-				//else if (type == typeof (string))
-					//value = reader.ReadString();
+				else if (type == typeof (string))
+					value = reader.ReadString();
 				else
 					value = reader.Read (context);
 

@@ -23,13 +23,13 @@ namespace SampleGame
 		private GraphicsDeviceManager graphics;
 		private SpriteBatch spriteBatch;
 		private SimpleClient client;
-		private List<CPlayer> players;
 		private SpriteFont font;
+		private bool isloaded;
 
 		private CPlayer localPlayer;
+		private List<CPlayer> players;
 		private Texture2D playerTexture;
 		private string playerName = "TestPlayer";
-		private bool isLoaded;
 
 		public SampleGame()
 		{
@@ -44,6 +44,7 @@ namespace SampleGame
 			font = Content.Load<SpriteFont> ("font");
 			playerTexture = Content.Load<Texture2D> ("circle");
 
+			// Start connecting to the server at 127.0.0.1:42900
 			IPAddress host = IPAddress.Parse ("127.0.0.1");
 			int port = Convert.ToInt32 (42900);
 
@@ -63,7 +64,7 @@ namespace SampleGame
 			GraphicsDevice.Clear(Color.Black);
 			spriteBatch.Begin();
 
-			if (isLoaded)
+			if (isloaded)
 				RenderPlayers();
 
 			string renderText = "Connected: " + client.IsConnected.ToOnOff();
@@ -76,11 +77,12 @@ namespace SampleGame
 
 		private void RenderPlayers()
 		{
+			// Get the time to render at by first calculating the LERP value
 			int lerp = (int)(client.Interpolation * 1000);
-
 			DateTime currentTime = DateTime.Now.ToUniversalTime();
 			DateTime renderTime = currentTime.SubtractMilliseconds (lerp);
 
+			// Get the two snapshots to interpolate between
 			SnapshotPair pair = client.Snapshots.GetRenderSnapshots (renderTime);
 			
 			// Draw the local predicted version of our player
@@ -104,7 +106,7 @@ namespace SampleGame
 			if (player.Name == playerName)
 			{
 				localPlayer = player;
-				isLoaded = true;
+				isloaded = true;
 			}
 			else
 				players.Add (player);

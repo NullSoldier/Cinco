@@ -14,15 +14,15 @@ namespace SampleGame.Core
 			: base ("Player", EntityType.Server)
 		{
 			base.Register ("Position", Vector2.Zero);
-			//base.Register ("Name", string.Empty);
+			base.Register ("Name", string.Empty);
 
 			this.SendState = SendState.Always;
 		}
 
 		public string Name
 		{
-			get;// { return (string)base["Name"]; }
-			set;// { base["Name"] = value; }
+			get { return (string)base["Name"]; }
+			set { base["Name"] = value; }
 		}
 
 		public Vector2 Postion
