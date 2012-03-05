@@ -18,11 +18,46 @@ namespace Cinco.Core
 		{
 			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
 
+			this.snapshotManager = new SnapshotManager(10);
 			this.entities = new List<NetworkEntity> ();
 			this.entityMap = new Dictionary<uint, NetworkEntity>();
 			this.entityTypeInformation = new Dictionary<string, EntityInformation>();
 			
+			Predict = false;
+			Extrapolate = false;
+			Interpolation = 0.3f;
+			ExtrapolateAmount = 0.25f;
+
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
+		}
+
+		public SnapshotManager Snapshots
+		{
+			get { return snapshotManager; }
+		}
+
+		public bool Predict
+		{
+			get;
+			set;
+		}
+
+		public bool Extrapolate
+		{
+			get;
+			set;
+		}
+
+		public float Interpolation
+		{
+			get;
+			set;
+		}
+
+		public float ExtrapolateAmount
+		{
+			get;
+			set;
 		}
 
 		public void Register (string name, Type entityType)
@@ -55,6 +90,7 @@ namespace Cinco.Core
 		{
 		}
 
+		private SnapshotManager snapshotManager;
 		private List<NetworkEntity> entities;
 		private Dictionary<uint, NetworkEntity> entityMap;
 		private Dictionary<string, EntityInformation> entityTypeInformation;

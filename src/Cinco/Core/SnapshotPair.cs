@@ -17,7 +17,7 @@ namespace Cinco.Core
 		public Snapshot Older;
 		public Snapshot Newer;
 		
-		public NetworkEntity GetMergedCharacters (NetworkEntity source, DateTime time)
+		public NetworkEntity GetMerged (NetworkEntity source, DateTime time)
 		{
 			uint networkID = source.NetworkID;
 
@@ -45,7 +45,7 @@ namespace Cinco.Core
 
 		private NetworkEntity LerpEntity (NetworkEntity source, NetworkEntity one, NetworkEntity two, float lerp)
 		{
-			return source.Lerp(source, one, two);
+			return source.Lerp(source, one, two, lerp);
 		}
 	}
 }

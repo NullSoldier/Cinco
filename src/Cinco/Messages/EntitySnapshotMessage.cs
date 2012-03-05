@@ -66,6 +66,8 @@ namespace Cinco
 
 				if (field.Value.Value is Vector2)
 					writer.Write (context, (Vector2)field.Value.Value, new Vector2Serializer());
+				//if (field.Value.Value is string)
+					//writer.WriteString ((string)field.Value.Value);
 				else
 					writer.Write (context, field.Value.Value, field.Value.Type);
 			}
@@ -90,6 +92,8 @@ namespace Cinco
 
 				if (type == typeof (Vector2))
 					value = reader.Read (context, new Vector2Serializer ());
+				//else if (type == typeof (string))
+					//value = reader.ReadString();
 				else
 					value = reader.Read (context);
 

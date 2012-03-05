@@ -25,7 +25,11 @@ namespace SampleGame
 		private SimpleClient client;
 		private List<CPlayer> players;
 		private SpriteFont font;
+
+		private CPlayer localPlayer;
 		private Texture2D playerTexture;
+		private string playerName = "TestPlayer";
+		private bool isLoaded;
 
 		public SampleGame()
 		{
@@ -49,29 +53,61 @@ namespace SampleGame
 			client.ConnectAsync (new IPEndPoint (host, port))
 				.ContinueWith (t =>
 				{
-					client.Authenticate ("Player");
+					client.Authenticate (playerName);
 					Console.WriteLine ("We're connected!");
 				});
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
-
+			GraphicsDevice.Clear(Color.Black);
 			spriteBatch.Begin();
-			
-			foreach (CPlayer player in players)
-				spriteBatch.Draw (playerTexture, player.Postion, Color.Red);
 
-			spriteBatch.DrawString (font, "Connected: " + client.IsConnected.ToString(), Vector2.Zero, Color.Black);
+			if (isLoaded)
+				RenderPlayers();
+
+			string renderText = "Connected: " + client.IsConnected.ToOnOff();
+
+			spriteBatch.DrawString (font, renderText, Vector2.Zero, Color.Red);
 			spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
 
+		private void RenderPlayers()
+		{
+			int lerp = (int)(client.Interpolation * 1000);
+
+			DateTime currentTime = DateTime.Now.ToUniversalTime();
+			DateTime renderTime = currentTime.SubtractMilliseconds (lerp);
+
+			SnapshotPair pair = client.Snapshots.GetRenderSnapshots (renderTime);
+			
+			// Draw the local predicted version of our player
+			localPlayer.Draw (spriteBatch);
+
+			lock (players)
+			{
+				// Draw all of the interpolated snapshots of non local players
+				foreach (CPlayer player in players)
+				{
+					((CPlayer)pair.GetMerged (player, renderTime)).Draw (spriteBatch);
+				}
+			}
+		}
+
 		public void OnPlayerCreated (CPlayer player)
 		{
-			players.Add (player);
+			player.Texture = playerTexture;
+
+			// Is it our localPlayer, or someone else?
+			if (player.Name == playerName)
+			{
+				localPlayer = player;
+				isLoaded = true;
+			}
+			else
+				players.Add (player);
 		}
 	}
 }

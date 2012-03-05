@@ -43,7 +43,7 @@ namespace Cinco
 			return copy;
 		}
 
-		public virtual NetworkEntity Lerp (NetworkEntity source, NetworkEntity one, NetworkEntity two)
+		public virtual NetworkEntity Lerp (NetworkEntity source, NetworkEntity one, NetworkEntity two, float lerp)
 		{
 			throw new NotImplementedException();
 		}

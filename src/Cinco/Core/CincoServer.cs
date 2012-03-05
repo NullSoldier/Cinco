@@ -24,7 +24,7 @@ namespace Cinco
 			this.users = new Dictionary<IConnection, CincoUser> (options.MaxUsers);
 			this.entities = new Dictionary<uint, NetworkEntity> ();
 			this.userLock = new object();
-			this.syncLock = new object();
+			this.entityLock = new object();
 
 			// TODO: Recalculate on server options changing
 			tickDelay = (1 / options.TickRate) * 1000;
@@ -62,7 +62,7 @@ namespace Cinco
 
 				// Send snapshots to the clients who need them
 				Snapshot snapshot = null;
-				lock (syncLock)
+				lock (userLock)
 				{
 					foreach (CincoUser user in users.Values)
 					{
@@ -127,7 +127,7 @@ namespace Cinco
 		private uint lastEntityID;
 		private int userCount;
 		private object userLock;
-		private object syncLock;
+		private object entityLock;
 
 		private float tickDelay;
 		private float snapshotDelay;

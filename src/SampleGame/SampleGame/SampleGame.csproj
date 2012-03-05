@@ -112,6 +112,7 @@
     <Compile Include="Core\SimpleServer.cs" />
     <Compile Include="Core\SPlayer.cs" />
     <Compile Include="Core\SPlayerAI.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
     <Compile Include="Messages\ConnectMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
