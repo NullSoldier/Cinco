@@ -61,6 +61,7 @@
     <Compile Include="CincoProtocol.cs" />
     <Compile Include="ServerSync.cs" />
     <Compile Include="Vector2Serializer.cs" />
+    <Compile Include="Vector3Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tempest\Desktop\Tempest\Tempest.csproj">

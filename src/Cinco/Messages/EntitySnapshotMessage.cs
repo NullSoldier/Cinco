@@ -66,6 +66,8 @@ namespace Cinco
 
 				if (field.Value.Value is Vector2)
 					writer.Write (context, (Vector2)field.Value.Value, Vector2Serializer.Instance);
+				else if (field.Value.Value is Vector3)
+					writer.Write (context, (Vector3)field.Value.Value, Vector3Serializer.Instance);
 				else if (field.Value.Value is string)
 					writer.WriteString ((string)field.Value.Value);
 				else
@@ -92,6 +94,8 @@ namespace Cinco
 
 				if (type == typeof (Vector2))
 					value = reader.Read (context, Vector2Serializer.Instance);
+				else if (type == typeof (Vector3))
+					value = reader.Read (context, Vector3Serializer.Instance);
 				else if (type == typeof (string))
 					value = reader.ReadString();
 				else
