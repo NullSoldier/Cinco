@@ -45,7 +45,7 @@ namespace Cinco.Core
 			if (entityType.IsAssignableFrom (typeof (NetworkEntity)))
 				throw new Exception ("Must be an object that inherits from Network Entity");
 
-			ConstructorInfo constructorInfo = entityType.GetConstructors ().FirstOrDefault ();
+			ConstructorInfo constructorInfo = entityType.GetConstructor (Type.EmptyTypes);
 			if (constructorInfo == null)
 				throw new Exception ("Entity must contain a parameterless constructor");
 
