@@ -12,14 +12,14 @@ namespace Cinco
 	{
 		public void Serialize(ISerializationContext context, IValueWriter writer, Vector2 element)
 		{
-			writer.WriteInt32 ((int)element.X);
-			writer.WriteInt32 ((int)element.Y);
+			writer.WriteSingle (element.X);
+			writer.WriteSingle (element.Y);
 		}
 
 		public Vector2 Deserialize(ISerializationContext context, IValueReader reader)
 		{
-			float x = reader.ReadInt32();
-			float y = reader.ReadInt32();
+			float x = reader.ReadSingle();
+			float y = reader.ReadSingle ();
 
 			return new Vector2 (x, y);
 		}
