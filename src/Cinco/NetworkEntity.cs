@@ -27,6 +27,9 @@ namespace Cinco
 
 		public void Register<T> (string name, T value)
 		{
+			if (value == null)
+				throw new ArgumentNullException ("Must provide a default value for the value.");
+
 			lock (SyncLock)
 				Fields.Add (name, new PropertyGroup (value, value.GetType()));
 		}
