@@ -48,6 +48,11 @@ namespace Cinco
 			throw new NotImplementedException();
 		}
 
+		public T GetProperty<T> (string name)
+		{
+			return (T)this[name];
+		}
+
 		public object this[string name]
 		{
 			get { return this.Fields[name].Value; }
