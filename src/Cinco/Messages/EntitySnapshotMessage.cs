@@ -52,54 +52,52 @@ namespace Cinco
 		private void WriteEntity (NetworkEntity entity, ISerializationContext context, IValueWriter writer)
 		{
 			writer.WriteString (entity.EntityName);
-			writer.WriteUInt32 (entity.NetworkID);
-			writer.WriteInt32 (entity.Fields.Count);
+			writer.WriteUInt16 ((UInt16)entity.NetworkID);
+			writer.WriteUInt16 ((UInt16)entity.Fields.Count);
 
-			foreach (var field in entity.Fields)
+			foreach (var kvp in entity.Fields)
 			{
-				writer.WriteString (field.Key);
+				object fieldValue = kvp.Value.Value;
+
+				writer.WriteString (kvp.Key);
 
 				// Write the field type
 				ushort typeID;
-				context.TypeMap.GetTypeId (field.Value.Value.GetType (), out typeID);
+				context.TypeMap.GetTypeId (fieldValue.GetType (), out typeID);
 				writer.WriteUInt16 (typeID);
 
-				if (field.Value.Value is Vector2)
-					writer.Write (context, (Vector2)field.Value.Value, Vector2Serializer.Instance);
-				else if (field.Value.Value is Vector3)
-					writer.Write (context, (Vector3)field.Value.Value, Vector3Serializer.Instance);
-				else if (field.Value.Value is string)
-					writer.WriteString ((string)field.Value.Value);
+				if (fieldValue is Vector2)
+					writer.Write (context, (Vector2)fieldValue, Vector2Serializer.Instance);
+				else if (fieldValue is Vector3)
+					writer.Write (context, (Vector3)fieldValue, Vector3Serializer.Instance);
 				else
-					writer.Write (context, field.Value.Value, field.Value.Type);
+					writer.Write (context, fieldValue, kvp.Value.Type);
 			}
 		}
 
 		private NetworkEntity ReadEntity (ISerializationContext context, IValueReader reader)
 		{
 			var entity = new NetworkEntity (reader.ReadString (), EntityType.Client);
-			entity.NetworkID = reader.ReadUInt32();
 
-			int fieldCount = reader.ReadInt32 ();
+			entity.NetworkID = reader.ReadUInt16 ();
+			UInt16 fieldCount = reader.ReadUInt16 ();
 
 			for (int f = 0; f < fieldCount; f++)
 			{
 				string name = reader.ReadString ();
-				ushort typeID = reader.ReadUInt16();
+				ushort typeID = reader.ReadUInt16 ();
 
 				Type type;
 				context.TypeMap.TryGetType (typeID, out type);
-				
+
 				object value;
 
 				if (type == typeof (Vector2))
 					value = reader.Read (context, Vector2Serializer.Instance);
 				else if (type == typeof (Vector3))
 					value = reader.Read (context, Vector3Serializer.Instance);
-				else if (type == typeof (string))
-					value = reader.ReadString();
 				else
-					value = reader.Read (context);
+					value = reader.Read (context, type);
 
 				entity.Fields.Add (name, new PropertyGroup (value, type));
 			}
