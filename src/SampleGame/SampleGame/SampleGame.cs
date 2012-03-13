@@ -30,6 +30,7 @@ namespace SampleGame
 		private List<CPlayer> players;
 		private Texture2D playerTexture;
 		private string playerName = "TestPlayer";
+		private float Interpolation = 0.1f;
 
 		public SampleGame()
 		{
@@ -78,7 +79,7 @@ namespace SampleGame
 		private void RenderPlayers()
 		{
 			// Get the time to render at by first calculating the LERP value
-			int lerp = (int)(client.Interpolation * 1000);
+			int lerp = (int)(Interpolation * 1000);
 			DateTime currentTime = DateTime.Now.ToUniversalTime();
 			DateTime renderTime = currentTime.SubtractMilliseconds (lerp);
 

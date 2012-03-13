@@ -18,15 +18,12 @@ namespace Cinco.Core
 		{
 			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
 
-			this.snapshotManager = new SnapshotManager(10);
+			this.snapshotManager = new SnapshotManager (10);
 			this.entities = new List<NetworkEntity> ();
-			this.entityMap = new Dictionary<uint, NetworkEntity>();
-			this.entityTypeInformation = new Dictionary<string, EntityInformation>();
-			
-			Predict = false;
-			Extrapolate = false;
-			Interpolation = 0.3f;
-			ExtrapolateAmount = 0.25f;
+			this.entityMap = new Dictionary<uint, NetworkEntity> ();
+			this.entityTypeInformation = new Dictionary<string, EntityInformation> ();
+
+			TickRate = new TimeSpan (0, 0, 0, 0, 15);
 
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
 		}
@@ -36,36 +33,18 @@ namespace Cinco.Core
 			get { return snapshotManager; }
 		}
 
-		public bool Predict
+		public TimeSpan TickRate
 		{
 			get;
-			set;
+			private set;
 		}
 
-		public bool Extrapolate
+		public void Register(string name, Type entityType)
 		{
-			get;
-			set;
-		}
+			if (entityType.IsAssignableFrom (typeof (NetworkEntity)))
+				throw new Exception ("Must be an object that inherits from Network Entity");
 
-		public float Interpolation
-		{
-			get;
-			set;
-		}
-
-		public float ExtrapolateAmount
-		{
-			get;
-			set;
-		}
-
-		public void Register (string name, Type entityType)
-		{
-			if (entityType.IsAssignableFrom (typeof(NetworkEntity)))
-				throw new Exception("Must be an object that inherits from Network Entity");
-
-			ConstructorInfo constructorInfo = entityType.GetConstructors().FirstOrDefault();
+			ConstructorInfo constructorInfo = entityType.GetConstructors ().FirstOrDefault ();
 			if (constructorInfo == null)
 				throw new Exception ("Entity must contain a parameterless constructor");
 
@@ -73,14 +52,14 @@ namespace Cinco.Core
 			entityTypeInformation.Add (name, entityInfo);
 		}
 
-		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
+		public void OnEntitySnapshotMessage(MessageEventArgs<EntitySnapshotMessage> ev)
 		{
 			var entityMessage = ev.Message;
 
 			foreach (SnapshotEntity entity in entityMessage.Entities)
 			{
-				if (!entityMap.ContainsKey(entity.Entity.NetworkID))
-					CreateEntity(entity.Entity);
+				if (!entityMap.ContainsKey (entity.Entity.NetworkID))
+					CreateEntity (entity.Entity);
 				else
 					SyncEntity (entity.Entity);
 			}
@@ -95,17 +74,17 @@ namespace Cinco.Core
 		private Dictionary<uint, NetworkEntity> entityMap;
 		private Dictionary<string, EntityInformation> entityTypeInformation;
 
-		private void CreateEntity (NetworkEntity entity)
+		private void CreateEntity(NetworkEntity entity)
 		{
-			if (!entityTypeInformation.ContainsKey(entity.EntityName))
+			if (!entityTypeInformation.ContainsKey (entity.EntityName))
 				throw new Exception ("Entity has not been registered with the network system");
 
 			EntityInformation info = entityTypeInformation[entity.EntityName];
-			var newEntity = (NetworkEntity)info.Create();
+			var newEntity = (NetworkEntity)info.Create ();
 			newEntity.NetworkID = entity.NetworkID;
 
-			entityMap.Add(newEntity.NetworkID, newEntity);
-			entities.Add(newEntity);
+			entityMap.Add (newEntity.NetworkID, newEntity);
+			entities.Add (newEntity);
 
 			SyncEntity (entity);
 			OnEntityCreated (newEntity);
@@ -113,8 +92,8 @@ namespace Cinco.Core
 
 		private void SyncEntity (NetworkEntity entity)
 		{
-			var localEntity = entityMap [entity.NetworkID];
-			
+			var localEntity = entityMap[entity.NetworkID];
+
 			foreach (var kvp in entity.Fields)
 				localEntity.Fields[kvp.Key] = kvp.Value;
 		}
@@ -122,14 +101,14 @@ namespace Cinco.Core
 
 	public class EntityInformation
 	{
-		public EntityInformation (ConstructorInfo constructorInfo)
+		public EntityInformation(ConstructorInfo constructorInfo)
 		{
 			this.constructorInfo = constructorInfo;
 		}
-		
-		public object Create ()
+
+		public object Create()
 		{
-			return constructorInfo.Invoke(null);
+			return constructorInfo.Invoke (null);
 		}
 
 		private readonly ConstructorInfo constructorInfo;
