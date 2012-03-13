@@ -40,7 +40,7 @@ namespace Cinco.Core
 			private set;
 		}
 
-		public void Register(string name, Type entityType)
+		public void Register (string name, Type entityType)
 		{
 			if (entityType.IsAssignableFrom (typeof (NetworkEntity)))
 				throw new Exception ("Must be an object that inherits from Network Entity");
@@ -53,7 +53,7 @@ namespace Cinco.Core
 			entityTypeInformation.Add (name, entityInfo);
 		}
 
-		public void OnEntitySnapshotMessage(MessageEventArgs<EntitySnapshotMessage> ev)
+		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
 		{
 			var entityMessage = ev.Message;
 
@@ -80,7 +80,7 @@ namespace Cinco.Core
 		private Dictionary<uint, NetworkEntity> entityMap;
 		private Dictionary<string, EntityInformation> entityTypeInformation;
 
-		private void CreateEntity(NetworkEntity entity)
+		private void CreateEntity (NetworkEntity entity)
 		{
 			if (!entityTypeInformation.ContainsKey (entity.EntityName))
 				throw new Exception ("Entity has not been registered with the network system");
@@ -107,7 +107,7 @@ namespace Cinco.Core
 
 	public class EntityInformation
 	{
-		public EntityInformation(ConstructorInfo constructorInfo)
+		public EntityInformation (ConstructorInfo constructorInfo)
 		{
 			this.constructorInfo = constructorInfo;
 		}
