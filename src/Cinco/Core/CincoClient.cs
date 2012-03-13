@@ -26,6 +26,7 @@ namespace Cinco.Core
 			TickRate = new TimeSpan (0, 0, 0, 0, 15);
 
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
+			this.RegisterMessageHandler<ServerInformationMessage> (OnServerInformationMessage);
 		}
 
 		public SnapshotManager Snapshots
@@ -63,6 +64,11 @@ namespace Cinco.Core
 				else
 					SyncEntity (entity.Entity);
 			}
+		}
+
+		public void OnServerInformationMessage (MessageEventArgs<ServerInformationMessage> ev)
+		{
+			TickRate = new TimeSpan (0, 0, 0, 0, (int)ev.Message.TickRate);
 		}
 
 		public virtual void OnEntityCreated (NetworkEntity entity)

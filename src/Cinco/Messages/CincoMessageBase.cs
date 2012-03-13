@@ -17,6 +17,7 @@ namespace Cinco.Messages
 
 	public enum CincoMessageTypes
 	{
-		EntitySnapshotMessage=0
+		EntitySnapshotMessage = 0,
+		ServerInformationMessage = 1
 	}
 }

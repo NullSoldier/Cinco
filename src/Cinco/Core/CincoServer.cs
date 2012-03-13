@@ -103,11 +103,14 @@ namespace Cinco
 			{
 				Connection = e.Connection,
 				IsActive = true,
+				TickRate = options.TickRate,
+				UpdateRate = options.UpdateRate
 			};
 
 			lock (userLock)
 				this.users.Add (e.Connection, cincoUser);
 
+			SendServerInformation (cincoUser);
 			base.OnConnectionMade (sender, e);
 		}
 
@@ -169,6 +172,11 @@ namespace Cinco
 			}
 
 			return snapshot;
+		}
+
+		private void SendServerInformation(CincoUser user)
+		{
+			user.Connection.Send (new ServerInformationMessage(tickDelay));
 		}
 	}
 }

@@ -12,12 +12,6 @@ namespace Cinco.Core
 		{
 			TickRate = 66;
 			UpdateRate = 66;
-			Interpolation = 0.3f;
-			CmdRate = 20;
-			Extrapolate = true;
-			Predict = false;
-			Smooth = true;
-			SmoothTime = 1f;
 		}
 	
 		public IConnection Connection
@@ -35,7 +29,7 @@ namespace Cinco.Core
 		#region Client settings
 
 		/// <summary>
-		/// // Absolute ticks per second
+		/// Absolute ticks per second
 		/// </summary>
 		public float TickRate
 		{
@@ -47,57 +41,6 @@ namespace Cinco.Core
 		/// Absolute number of client snapshots to send this client a second
 		/// </summary>
 		public float UpdateRate
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// // Delay in time in seconds to use in rendering
-		/// </summary>
-		public float Interpolation
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Absolute UserCommand packets sent per second
-		/// </summary>
-		public float CmdRate
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// When there aren't at least two packets in the Interpolation range, perform linear interpolation
-		/// </summary>
-		public bool Extrapolate
-		{
-			get;
-			set;
-		}
-
-		public float ExtrapolateAmount
-		{
-			get;
-			set;
-		}
-
-		public bool Predict
-		{
-			get;
-			set;
-		}
-
-		public bool Smooth
-		{
-			get;
-			set;
-		}
-
-		public float SmoothTime
 		{
 			get;
 			set;
