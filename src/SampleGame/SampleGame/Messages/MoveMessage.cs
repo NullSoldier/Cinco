@@ -2,39 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Tempest;
 
 namespace SampleGame.Messages
 {
-
-	public class ConnectMessage
+	public class MoveMessage
 		: SampleBaseMessage
 	{
-		public ConnectMessage()
-			: base (SampleMessageTypes.ConnectMessage)
+		public MoveMessage()
+			: base (SampleMessageTypes.MoveMessage)
 		{
 		}
 
-		public ConnectMessage(string playerName)
-			: base (SampleMessageTypes.ConnectMessage)
+		public MoveMessage (Vector2 direction)
+			: base (SampleMessageTypes.MoveMessage)
 		{
-			this.PlayerName = playerName;
+			this.Direction = direction;
 		}
 
-		public string PlayerName
+		public Vector2 Direction
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public override void WritePayload(ISerializationContext context, IValueWriter writer)
 		{
-			writer.WriteString (this.PlayerName);
+			writer.Write (context, Direction);
 		}
 
 		public override void ReadPayload(ISerializationContext context, IValueReader reader)
 		{
-			this.PlayerName = reader.ReadString ();
+			Direction = reader.Read<Vector2> (context);
 		}
 	}
 }

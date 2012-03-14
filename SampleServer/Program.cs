@@ -20,7 +20,7 @@ namespace SampleServer
 
 		static void Main(string[] args)
 		{
-			P.Protocol.Discover (typeof (BaseMessage).Assembly);
+			P.Protocol.Discover (typeof (SampleBaseMessage).Assembly);
 
 			server = new SimpleServer (new NetworkConnectionProvider (new [] { P.Protocol, CincoProtocol.Protocol }, new IPEndPoint (IPAddress.Any, port), 32));
 			server.Start ();

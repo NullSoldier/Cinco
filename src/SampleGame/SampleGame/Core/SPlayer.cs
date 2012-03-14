@@ -31,6 +31,12 @@ namespace SampleGame.Core
 			set { base["Position"] = value; }
 		}
 
+		public Vector2 Direction
+		{
+			get;
+			set;
+		}
+
 		public int Health
 		{
 			get;
@@ -39,6 +45,7 @@ namespace SampleGame.Core
 
 		public virtual void Update()
 		{
+			Postion += Direction * 5;
 		}
 	}
 }

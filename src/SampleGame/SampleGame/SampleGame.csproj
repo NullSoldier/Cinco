@@ -113,8 +113,9 @@
     <Compile Include="Core\SPlayer.cs" />
     <Compile Include="Core\SPlayerAI.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="Messages\BaseMessage.cs" />
+    <Compile Include="Messages\SampleBaseMessage.cs" />
     <Compile Include="Messages\ConnectMessages.cs" />
+    <Compile Include="Messages\MoveMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Protocol.cs" />

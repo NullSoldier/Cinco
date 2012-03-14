@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using SampleGame.Core;
+using SampleGame.Messages;
 using Tempest;
 using Tempest.Providers.Network;
 
@@ -58,6 +59,25 @@ namespace SampleGame
 					client.Authenticate (playerName);
 					Console.WriteLine ("We're connected!");
 				});
+		}
+
+		protected override void Update(GameTime gameTime)
+		{
+			if (localPlayer != null)
+			{
+				var keyState = Keyboard.GetState ();
+				var moveVector = Vector2.Zero;
+
+				if (keyState.IsKeyDown (Keys.Left)) { moveVector.X -= 1; }
+				if (keyState.IsKeyDown (Keys.Right)) { moveVector.X += 1; }
+				if (keyState.IsKeyDown (Keys.Down)) { moveVector.Y += 1; }
+				if (keyState.IsKeyDown (Keys.Up)) { moveVector.Y -= 1; }
+
+				if (moveVector != Vector2.Zero)
+					moveVector.Normalize ();
+
+				client.Connection.Send (new MoveMessage (moveVector));
+			}
 		}
 
 		protected override void Draw(GameTime gameTime)
