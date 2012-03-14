@@ -19,14 +19,15 @@ namespace Cinco.Core
 			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
 
 			this.snapshotManager = new SnapshotManager (10);
-			this.entities = new List<NetworkEntity> ();
-			this.entityMap = new Dictionary<uint, NetworkEntity> ();
+			this.entities = new Dictionary<uint, NetworkEntity> ();
 			this.entityTypeInformation = new Dictionary<string, EntityInformation> ();
+			this.entityLock = new object ();
 
 			TickRate = new TimeSpan (0, 0, 0, 0, 15);
 
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
 			this.RegisterMessageHandler<ServerInformationMessage> (OnServerInformationMessage);
+			this.RegisterMessageHandler<DestroyEntityMessage> (OnDestroyEntityMessage);
 		}
 
 		public SnapshotManager Snapshots
@@ -53,32 +54,48 @@ namespace Cinco.Core
 			entityTypeInformation.Add (name, entityInfo);
 		}
 
-		public void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
+		private void OnEntitySnapshotMessage (MessageEventArgs<EntitySnapshotMessage> ev)
 		{
 			var entityMessage = ev.Message;
 
 			foreach (SnapshotEntity entity in entityMessage.Entities)
 			{
-				if (!entityMap.ContainsKey (entity.Entity.NetworkID))
+				if (!this.entities.ContainsKey (entity.Entity.NetworkID))
 					CreateEntity (entity.Entity);
 				else
 					SyncEntity (entity.Entity);
 			}
 		}
 
-		public void OnServerInformationMessage (MessageEventArgs<ServerInformationMessage> ev)
+		private void OnServerInformationMessage (MessageEventArgs<ServerInformationMessage> ev)
 		{
 			TickRate = new TimeSpan (0, 0, 0, 0, (int)ev.Message.TickRate);
+		}
+
+		public void OnDestroyEntityMessage (MessageEventArgs<DestroyEntityMessage> ev)
+		{
+			NetworkEntity destroyedEntity;
+			lock (entityLock)
+			{
+				destroyedEntity = entities[ev.Message.EntityID];
+				entities.Remove (ev.Message.EntityID);
+			}
+
+			OnEntityDestroyed (destroyedEntity);
 		}
 
 		public virtual void OnEntityCreated (NetworkEntity entity)
 		{
 		}
 
+		public virtual void OnEntityDestroyed (NetworkEntity entity)
+		{
+		}
+
 		private SnapshotManager snapshotManager;
-		private List<NetworkEntity> entities;
-		private Dictionary<uint, NetworkEntity> entityMap;
+		private Dictionary<uint, NetworkEntity> entities;
 		private Dictionary<string, EntityInformation> entityTypeInformation;
+		private object entityLock;
 
 		private void CreateEntity (NetworkEntity entity)
 		{
@@ -89,8 +106,8 @@ namespace Cinco.Core
 			var newEntity = (NetworkEntity)info.Create ();
 			newEntity.NetworkID = entity.NetworkID;
 
-			entityMap.Add (newEntity.NetworkID, newEntity);
-			entities.Add (newEntity);
+			lock (entityLock)
+				entities.Add (newEntity.NetworkID, newEntity);
 
 			SyncEntity (entity);
 			OnEntityCreated (newEntity);
@@ -98,7 +115,7 @@ namespace Cinco.Core
 
 		private void SyncEntity (NetworkEntity entity)
 		{
-			var localEntity = entityMap[entity.NetworkID];
+			var localEntity = entities[entity.NetworkID];
 
 			foreach (var kvp in entity.Fields)
 				localEntity.Fields[kvp.Key] = kvp.Value;

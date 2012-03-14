@@ -54,6 +54,7 @@
     <Compile Include="Core\SnapshotPair.cs" />
     <Compile Include="IndexedQueue.cs" />
     <Compile Include="Messages\CincoMessageBase.cs" />
+    <Compile Include="Messages\DestroyEntityMessage.cs" />
     <Compile Include="Messages\EntitySnapshotMessage.cs" />
     <Compile Include="Messages\ServerInformationMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
