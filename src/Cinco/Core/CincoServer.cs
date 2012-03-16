@@ -97,21 +97,22 @@ namespace Cinco
 			}
 		}
 
-		protected override void OnConnectionMade (object sender, ConnectionMadeEventArgs e)
+		public CincoUser RegisterUser (IConnection connection)
 		{
 			var cincoUser = new CincoUser
 			{
-				Connection = e.Connection,
-				IsActive = true,
+				Connection = connection,
 				TickRate = options.TickRate,
-				UpdateRate = options.UpdateRate
+				UpdateRate = options.UpdateRate,
+				IsActive = true,
 			};
 
 			lock (userLock)
-				this.users.Add (e.Connection, cincoUser);
+				this.users.Add (connection, cincoUser);
 
 			SendServerInformation (cincoUser);
-			base.OnConnectionMade (sender, e);
+
+			return cincoUser;
 		}
 
 		protected override void OnConnectionDisconnected(object sender, DisconnectedEventArgs e)
@@ -174,9 +175,9 @@ namespace Cinco
 			return snapshot;
 		}
 
-		private void SendServerInformation(CincoUser user)
+		private void SendServerInformation (CincoUser user)
 		{
-			user.Connection.Send (new ServerInformationMessage(tickDelay));
+			user.Connection.Send (new ServerInformationMessage (tickDelay));
 		}
 	}
 }
