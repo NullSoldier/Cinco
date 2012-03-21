@@ -54,14 +54,34 @@ namespace Cinco
 
 		public virtual void Update()
 		{
+			lastTickTime = DateTime.Now;
+
 			while (true)
 			{
 				DateTime currentTime = DateTime.Now;
+				TimeSpan difference = currentTime - lastTickTime;
 
-				if ((currentTime - lastTickTime).TotalMilliseconds >= tickDelay)
+				if (difference.TotalMilliseconds >= tickDelay)
 				{
+					lostTime = difference.TotalMilliseconds - tickDelay;
+
+					while (lostTime >= tickDelay)
+					{
+						lostTime -= tickDelay;
+						catchupTicks++;
+					}
+
 					Tick (currentTime);
 					lastTickTime = currentTime;
+				}
+
+				if (catchupTicks > 0)
+				{
+					while (catchupTicks > 0)
+					{
+						Tick (currentTime);
+						catchupTicks--;
+					}
 				}
 
 				// Send snapshots to the clients who need them
@@ -136,6 +156,9 @@ namespace Cinco
 		private float tickDelay;
 		private float snapshotDelay;
 		private DateTime lastTickTime;
+
+		private double lostTime;
+		private int catchupTicks;
 
 		private void StartUpdateThread()
 		{
