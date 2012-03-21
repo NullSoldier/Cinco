@@ -15,25 +15,25 @@ namespace Cinco
 	public class CincoServer
 		: ServerBase
 	{
-		public CincoServer (IConnectionProvider connectionProvider, ServerOptions serverOptions)
-			: base (connectionProvider, MessageTypes.Reliable) 
+		public CincoServer(IConnectionProvider connectionProvider, ServerOptions serverOptions)
+			: base (connectionProvider, MessageTypes.Reliable)
 		{
 			CincoProtocol.Protocol.Discover (typeof (CincoMessageBase).Assembly);
 
 			this.options = serverOptions;
 			this.users = new Dictionary<IConnection, CincoUser> (options.MaxUsers);
 			this.entities = new Dictionary<uint, NetworkEntity> ();
-			this.userLock = new object();
-			this.entityLock = new object();
+			this.userLock = new object ();
+			this.entityLock = new object ();
 
 			// TODO: Recalculate on server options changing
 			tickDelay = (1 / options.TickRate) * 1000;
 			snapshotDelay = (1 / options.HistoryRate) * 1000;
 
-			StartUpdateThread();
+			StartUpdateThread ();
 		}
 
-		public void RegisterEntity (NetworkEntity entity)
+		public void RegisterEntity(NetworkEntity entity)
 		{
 			lock (entityLock)
 			{
@@ -42,13 +42,13 @@ namespace Cinco
 			}
 		}
 
-		public void UnregisterEntity (uint entityID)
+		public void UnregisterEntity(uint entityID)
 		{
 			lock (entityLock)
 				entities.Remove (entityID);
 		}
 
-		public virtual void Tick (DateTime dateTime)
+		public virtual void Tick(DateTime dateTime)
 		{
 		}
 
@@ -117,7 +117,7 @@ namespace Cinco
 			}
 		}
 
-		public CincoUser RegisterUser (IConnection connection)
+		public CincoUser RegisterUser(IConnection connection)
 		{
 			var cincoUser = new CincoUser
 			{
@@ -172,9 +172,9 @@ namespace Cinco
 			Update ();
 		}
 
-		private Snapshot GetSnapshot (bool fullSnapshot)
+		private Snapshot GetSnapshot(bool fullSnapshot)
 		{
-			Snapshot snapshot = new Snapshot();
+			Snapshot snapshot = new Snapshot ();
 
 			lock (entityLock)
 			{
@@ -198,7 +198,7 @@ namespace Cinco
 			return snapshot;
 		}
 
-		private void SendServerInformation (CincoUser user)
+		private void SendServerInformation(CincoUser user)
 		{
 			user.Connection.Send (new ServerInformationMessage (tickDelay));
 		}

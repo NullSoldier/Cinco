@@ -39,9 +39,10 @@ namespace SampleGame.Core
 		{
 			var player = new SPlayer();
 			player.Name = ev.Message.PlayerName;
-
 			players.Add (ev.Connection.ConnectionId, player);
+
 			RegisterEntity (player);
+			RegisterUser (ev.Connection);
 
 			Console.Write (player.Name + " has connected!");
 		}
