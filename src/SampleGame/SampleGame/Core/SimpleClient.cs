@@ -24,7 +24,7 @@ namespace SampleGame.Core
 			connection.Send (message);
 		}
 
-		public override void OnEntityCreated(NetworkEntity entity)
+		protected override void OnEntityCreated(NetworkEntity entity)
 		{
 			game.OnPlayerCreated ((CPlayer)entity);
 		}

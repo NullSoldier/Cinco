@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Cinco.Messages;
+using Microsoft.Xna.Framework;
 using SampleGame;
 using Tempest;
 using Tempest.Providers.Network;
@@ -65,6 +66,8 @@ namespace Cinco.Core
 				else
 					SyncEntity (entity.Entity);
 			}
+			
+			OnSnapshotProcessed();
 		}
 
 		private void OnServerInformationMessage (MessageEventArgs<ServerInformationMessage> ev)
@@ -84,11 +87,15 @@ namespace Cinco.Core
 			OnEntityDestroyed (destroyedEntity);
 		}
 
-		public virtual void OnEntityCreated (NetworkEntity entity)
+		protected virtual void OnEntityCreated (NetworkEntity entity)
 		{
 		}
 
-		public virtual void OnEntityDestroyed (NetworkEntity entity)
+		protected virtual void OnEntityDestroyed (NetworkEntity entity)
+		{
+		}
+
+		protected virtual void OnSnapshotProcessed ()
 		{
 		}
 
