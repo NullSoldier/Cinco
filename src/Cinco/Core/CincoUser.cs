@@ -26,6 +26,12 @@ namespace Cinco.Core
 			set;
 		}
 
+		public bool IsClockSynchronized
+		{
+			get;
+			set;
+		}
+
 		#region Client settings
 
 		/// <summary>

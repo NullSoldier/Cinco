@@ -19,6 +19,8 @@ namespace Cinco.Messages
 	{
 		EntitySnapshotMessage = 0,
 		ServerInformationMessage = 1,
-		DestroyEntityMessage = 2
+		DestroyEntityMessage = 2,
+		PingMessage = 3,
+		PongMessage = 4
 	}
 }

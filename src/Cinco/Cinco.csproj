@@ -56,6 +56,8 @@
     <Compile Include="Messages\CincoMessageBase.cs" />
     <Compile Include="Messages\DestroyEntityMessage.cs" />
     <Compile Include="Messages\EntitySnapshotMessage.cs" />
+    <Compile Include="Messages\PingMessage.cs" />
+    <Compile Include="Messages\PongMessage.cs" />
     <Compile Include="Messages\ServerInformationMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
     <Compile Include="NetworkEntityHelper.cs" />
