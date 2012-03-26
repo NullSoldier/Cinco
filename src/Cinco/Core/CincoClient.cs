@@ -29,6 +29,7 @@ namespace Cinco.Core
 			this.RegisterMessageHandler<EntitySnapshotMessage> (OnEntitySnapshotMessage);
 			this.RegisterMessageHandler<ServerInformationMessage> (OnServerInformationMessage);
 			this.RegisterMessageHandler<DestroyEntityMessage> (OnDestroyEntityMessage);
+			this.RegisterMessageHandler<CincoPingMessage> (OnPingMessageReceived);
 		}
 
 		public SnapshotManager Snapshots
@@ -73,6 +74,11 @@ namespace Cinco.Core
 		private void OnServerInformationMessage (MessageEventArgs<ServerInformationMessage> ev)
 		{
 			TickRate = new TimeSpan (0, 0, 0, 0, (int)ev.Message.TickRate);
+		}
+
+		private void OnPingMessageReceived (MessageEventArgs<CincoPingMessage> ev)
+		{
+			connection.Send (new CincoPongMessage());
 		}
 
 		public void OnDestroyEntityMessage (MessageEventArgs<DestroyEntityMessage> ev)

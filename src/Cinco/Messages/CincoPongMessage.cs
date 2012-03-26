@@ -6,10 +6,10 @@ using Tempest;
 
 namespace Cinco.Messages
 {
-	public class PongMessage
+	public class CincoPongMessage
 		: CincoMessageBase
 	{
-		public PongMessage()
+		public CincoPongMessage()
 			: base (CincoMessageTypes.PongMessage)
 		{
 		}

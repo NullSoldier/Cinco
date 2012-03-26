@@ -6,10 +6,10 @@ using Tempest;
 
 namespace Cinco.Messages
 {
-	public class PingMessage
+	public class CincoPingMessage
 		: CincoMessageBase
 	{
-		public PingMessage()
+		public CincoPingMessage()
 			: base (CincoMessageTypes.PingMessage)
 		{
 		}

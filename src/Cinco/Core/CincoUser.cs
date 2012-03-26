@@ -12,6 +12,8 @@ namespace Cinco.Core
 		{
 			TickRate = 66;
 			UpdateRate = 66;
+
+			LatencySamples = new IndexedQueue<double> (10);
 		}
 	
 		public IConnection Connection
@@ -31,6 +33,19 @@ namespace Cinco.Core
 			get;
 			set;
 		}
+
+		public DateTime PingTime
+		{
+			get;
+			set;
+		}
+
+		public IndexedQueue<double> LatencySamples
+		{
+			get;
+			set;
+		}
+
 
 		#region Client settings
 
