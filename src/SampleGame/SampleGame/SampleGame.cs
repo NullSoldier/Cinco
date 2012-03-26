@@ -91,6 +91,8 @@ namespace SampleGame
 			string renderText = "Connected: " + client.IsConnected.ToOnOff();
 
 			spriteBatch.DrawString (font, renderText, Vector2.Zero, Color.Red);
+			spriteBatch.DrawString (font, client.GetCurrentTime().ToLongTimeString(), new Vector2(0, 25), Color.Red);
+			spriteBatch.DrawString (font, "Latency: " + client.Latency.ToString(), new Vector2 (0, 50), Color.Red);
 			spriteBatch.End();
 
 			base.Draw(gameTime);

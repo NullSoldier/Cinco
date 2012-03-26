@@ -21,6 +21,7 @@ namespace Cinco.Messages
 		ServerInformationMessage = 1,
 		DestroyEntityMessage = 2,
 		PingMessage = 3,
-		PongMessage = 4
+		PongMessage = 4,
+		TimeSyncMessage = 5
 	}
 }

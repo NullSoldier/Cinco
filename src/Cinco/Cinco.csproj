@@ -48,6 +48,8 @@
     <Compile Include="ClientSync.cs" />
     <Compile Include="Core\CincoClient.cs" />
     <Compile Include="Core\CincoUser.cs" />
+    <Compile Include="Core\LatencySample.cs" />
+    <Compile Include="Core\MarzulloCalculater.cs" />
     <Compile Include="Core\PingContainer.cs" />
     <Compile Include="Core\ServerOptions.cs" />
     <Compile Include="Core\Snapshot.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="Messages\CincoPingMessage.cs" />
     <Compile Include="Messages\CincoPongMessage.cs" />
     <Compile Include="Messages\ServerInformationMessage.cs" />
+    <Compile Include="Messages\TimeSyncMessage.cs" />
     <Compile Include="NetworkEntity.cs" />
     <Compile Include="NetworkEntityHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

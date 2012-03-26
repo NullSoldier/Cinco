@@ -54,13 +54,13 @@ namespace Cinco
 				entities.Remove (entityID);
 		}
 
-		public virtual void Tick(DateTime dateTime)
+		public virtual void Tick (DateTime dateTime)
 		{
 		}
 
 		public virtual void Update()
 		{
-			DateTime currentTime = DateTime.Now;
+			DateTime currentTime = DateTime.UtcNow;
 			TimeSpan difference = currentTime - lastTickTime;
 
 			if (difference.TotalMilliseconds >= tickDelay)
@@ -103,6 +103,9 @@ namespace Cinco
 						snapshot.Taken = currentTime;
 						user.SendSnapshot (snapshot, currentTime);
 					}
+
+					if ((user.NeedsTimeSync (currentTime)))
+						user.SendTimeSync (currentTime);
 				}
 			}
 
@@ -239,7 +242,7 @@ namespace Cinco
 
 					var connection = messageEventArgs.Connection;
 					double latency = currentTime.Subtract (pingMap[connection].PingTime).TotalMilliseconds;
-					pingMap[connection].User.LatencySamples.Enqueue (latency);
+					pingMap[connection].User.LatencySamples.Enqueue (new LatencySample(latency, 1));
 				}
 			}
 		}

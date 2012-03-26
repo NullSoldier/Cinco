@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using Cinco.Messages;
 using Microsoft.Xna.Framework;
 using SampleGame;
@@ -30,6 +31,7 @@ namespace Cinco.Core
 			this.RegisterMessageHandler<ServerInformationMessage> (OnServerInformationMessage);
 			this.RegisterMessageHandler<DestroyEntityMessage> (OnDestroyEntityMessage);
 			this.RegisterMessageHandler<CincoPingMessage> (OnPingMessageReceived);
+			this.RegisterMessageHandler<TimeSyncMessage> (OnTimeSyncMessage);
 		}
 
 		public SnapshotManager Snapshots
@@ -41,6 +43,17 @@ namespace Cinco.Core
 		{
 			get;
 			private set;
+		}
+
+		public double Latency
+		{
+			get;
+			private set;
+		}
+
+		public DateTime GetCurrentTime()
+		{
+			return DateTime.UtcNow + clockOffset;
 		}
 
 		public void Register (string name, Type entityType)
@@ -81,6 +94,16 @@ namespace Cinco.Core
 			connection.Send (new CincoPongMessage());
 		}
 
+		private void OnTimeSyncMessage(MessageEventArgs<TimeSyncMessage> ev)
+		{
+			var serverTime = ev.Message.ServerClockTime;
+			var adjusted = serverTime.AddMilliseconds (ev.Message.Latency);
+
+			clockOffset = DateTime.UtcNow.Subtract(adjusted);
+
+			Latency = ev.Message.Latency;
+		}
+
 		public void OnDestroyEntityMessage (MessageEventArgs<DestroyEntityMessage> ev)
 		{
 			NetworkEntity destroyedEntity;
@@ -109,6 +132,7 @@ namespace Cinco.Core
 		private Dictionary<uint, NetworkEntity> entities;
 		private Dictionary<string, EntityInformation> entityTypeInformation;
 		private object entityLock;
+		private TimeSpan clockOffset;
 
 		private void CreateEntity (NetworkEntity entity)
 		{
