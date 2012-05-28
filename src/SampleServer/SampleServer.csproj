@@ -47,11 +47,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Cinco\Cinco.csproj">
+    <ProjectReference Include="..\Cinco\Cinco.csproj">
       <Project>{7F562296-C5C3-437F-B812-D7AF4ABDEEA5}</Project>
       <Name>Cinco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\SampleGame\SampleGame\SampleGame.csproj">
+    <ProjectReference Include="..\SampleGame\SampleGame\SampleGame.csproj">
       <Project>{EA620998-579D-4CB4-8977-3A5CC0735C70}</Project>
       <Name>SampleGame</Name>
     </ProjectReference>

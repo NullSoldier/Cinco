@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame", "src\SampleGam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGameContent", "src\SampleGame\SampleGameContent\SampleGameContent.contentproj", "{093C838E-1B0E-4F3F-9824-5553CE85A283}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleServer", "SampleServer\SampleServer.csproj", "{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleServer", "src\SampleServer\SampleServer.csproj", "{FB63EA73-60BE-4244-B870-C9BF7B8AF2D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
